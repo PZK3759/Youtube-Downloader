@@ -38,7 +38,7 @@ SET /P sub="enter subtitle command: "
 ECHO.
 ECHO ======================================================================================================================
 ECHO.
-yt-dlp -o "Videos/%%(title)s - %%(uploader)s.%%(ext)s" -f "%video%+%audio%" "%sub%" -i --ignore-config "%URL%"
+yt-dlp -o "Videos/%%(title)s - %%(uploader)s.%%(ext)s" -f "%video%+%audio%" "%sub%" --embed-thumbnail -i --ignore-config "%URL%"
 ECHO.
 ECHO ======================================================================================================================
 ECHO.
