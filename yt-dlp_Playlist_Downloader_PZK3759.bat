@@ -1,5 +1,5 @@
 @ECHO OFF
-title yt-dlp Youtube-Downloader by PZK3759
+title yt-dlp Playlist-Downloader by PZK3759
 
 ECHO ======================================================================================================================
 ECHO.
@@ -7,45 +7,34 @@ ECHO yt-dlp release
 yt-dlp --version
 ECHO.
 
+
 :start
 ECHO ======================================================================================================================
 ECHO.
-SET /P URL="Enter video URL: "
+SET /P URL="Enter Playlist URL: "
 ECHO.
-ECHO ======================================================================================================================
-goto formatList
-
-:formatList
-ECHO.
-yt-dlp -F --list-subs "%URL%"
-ECHO.
-ECHO ======================================================================================================================
-goto selection
 
 
 :selection
+ECHO ======================================================================================================================
 ECHO.
-ECHO 1) Video + Audio
-ECHO 2) Audio only
+ECHO 1) Download Full Playlist
+ECHO 2) Download Specified
 ECHO.
-SET /P option="Select option: "
-if %option% == 1 (goto download)
-if %option% == 2 (goto downloadSingle)
+SET /P playlist_options="Select option: "
+if %playlist_options% == 1 (goto full_playlist)
+if %playlist_options% == 2 (goto specified)
 ECHO.
 ECHO Unknown value
+ECHO Select a Valid Option
 ECHO.
-ECHO ======================================================================================================================
 goto selection
 
-:download
-ECHO.
-SET /P video="Select video format: "
-SET /P audio="Select audio format: "
-SET /P sub="enter subtitle command: "
+:full_playlist
 ECHO.
 ECHO ======================================================================================================================
 ECHO.
-yt-dlp -o "Videos/%%(title)s - %%(uploader)s.%%(ext)s" -f "%video%+%audio%" "%sub%" --embed-thumbnail -i --ignore-config "%URL%"
+yt-dlp -o "Videos/%%(playlist)s/%%(playlist_index)s.%%(title)s - %%(uploader)s.%%(ext)s" -f bestvideo*+bestaudio/best --embed-thumbnail -i --ignore-config "%URL%"
 ECHO.
 ECHO ======================================================================================================================
 ECHO.
@@ -58,13 +47,18 @@ SET /P completed_option="Select option: "
 if %completed_option% == 1 (goto start)
 if %completed_option% == 2 (goto EXIT)
 
-:downloadSingle
-ECHO.
-SET /P format="Select Audio Stream: "
+
+
+:specified
 ECHO.
 ECHO ======================================================================================================================
 ECHO.
-yt-dlp -f "%format%" --extract-audio --audio-format mp3 -o "Audios/%%(title)s - %%(uploader)s.%%(ext)s" --add-metadata --embed-thumbnail --metadata-from-title "%%(artist)s - %%(title)s" -i --ignore-config "%URL%"
+SET /P start_index="Select First Index: "
+SET /P end_index="Select Last Index: "
+ECHO.
+ECHO ======================================================================================================================
+ECHO.
+yt-dlp -o "Videos/%%(playlist)s/%%(playlist_index)s.%%(title)s - %%(uploader)s.%%(ext)s" --playlist-items "%start_index%-%end_index%" -f bestvideo*+bestaudio/best --embed-thumbnail -i --ignore-config "%URL%"
 ECHO.
 ECHO ======================================================================================================================
 ECHO.
